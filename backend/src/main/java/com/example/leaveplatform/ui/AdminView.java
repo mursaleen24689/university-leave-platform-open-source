@@ -221,6 +221,11 @@ public class AdminView extends VerticalLayout {
 
         Button run = new Button("Import rows",
                 event -> Feedback.run("Import finished.", this::importEmployees));
+        // An import of a few thousand rows occupies the request for a second or
+        // more, and a person who thinks nothing happened clicks again: the pasted
+        // text is still in the box, so the same rows are filed a second time. The
+        // button goes dead on the click and comes back when the answer arrives.
+        run.setDisableOnClick(true);
 
         section("Bulk import", new Paragraph(
                 "Paste rows from a spreadsheet. The header is optional. Existing staff numbers are updated; "

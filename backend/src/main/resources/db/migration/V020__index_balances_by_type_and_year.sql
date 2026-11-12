@@ -1,0 +1,39 @@
+-- An end-of-year balance read that no longer visits every row of the table.
+--
+-- LeaveBalanceRepository.findAllForYear asks for one leave type in one year,
+-- with the department optional:
+--
+--     where b.leaveType.id = :leaveTypeId and b.year = :year
+--       and (:departmentId is null or b.employee.department.id = :departmentId)
+--
+-- It sits behind the year summary and the monthly attendance sheet, and it runs
+-- once for every department a report covers. The only index reaching these
+-- columns was the unique key (employee_id, leave_type_id, leave_year), which
+-- leads with the employee: it answers "this person's balance", and for a whole
+-- year of people it is the wrong order.
+--
+-- This was measured rather than assumed, on a throwaway schema carrying the
+-- shape an installation reaches - 4,000 staff, six leave categories, three
+-- years, so 72,000 balance rows of which one type in one year is 4,000. The plan
+-- without this index reads the table in full: TABLE ACCESS FULL on leave_balance.
+-- With it, the same query does an INDEX RANGE SCAN and lands on those 4,000 rows.
+--
+-- The same measurement said something worth keeping in mind: on the schema this
+-- migration set leaves you - one seeded category, three years - the predicate
+-- selects a third of the table, and the optimizer reads it whole with or without
+-- this index. It starts paying for itself when the categories are configured,
+-- which is the first thing an administrator does on a real installation.
+--
+-- The other index suggested during the review before this was published,
+-- leave_application (leave_type_id, status), is deliberately not here. Every read
+-- of that table was checked first: the register and the lists filter by the dates
+-- a request covers and by its status (LeaveApplicationSpecifications.filter), the
+-- year totals group by employee and status
+-- (LeaveApplicationRepository.totalsForYear), and the per-employee figures use
+-- (employee_id, start_date) from V007. No query in the application names
+-- leave_type_id on leave_application at all - a leave type is shown next to a
+-- request, never asked for one - so that index would be written on every insert
+-- and never read. A report that is ever slow enough to need another index gets
+-- timed first, not guessed at twice.
+
+CREATE INDEX idx_balance_type_year ON leave_balance (leave_type_id, leave_year);

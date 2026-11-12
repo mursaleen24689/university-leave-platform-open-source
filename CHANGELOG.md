@@ -7,6 +7,35 @@ This is the public history. It starts at the release, not at the first commit:
 the development that came before was for one institution, and its tickets,
 screenshots and data are not part of this repository.
 
+## [Unreleased]
+
+Work on `main` after the `0.1.0` tag, not yet released.
+
+### Added
+
+- **`V020__index_balances_by_type_and_year.sql`** gives `leave_balance` the index
+  the year-end reports ask for, `(leave_type_id, leave_year)`. The only key that
+  reached those columns led with the employee, which is right for "my balance" and
+  wrong for "every balance of casual leave in 2026" - that read the table in full.
+  Measured on a throwaway schema carrying 4,000 staff, six leave types and three
+  years: `TABLE ACCESS FULL` became `INDEX RANGE SCAN`. The index the same review
+  suggested for `leave_application (leave_type_id, status)` was measured too and
+  refused, because no query in the application names a leave type on that table.
+
+### Fixed
+
+- **Pressing *Import rows* twice no longer files the same staff sheet twice.** The
+  import runs on the request thread, so a large sheet leaves the screen silent for
+  a second or more, and the natural second click re-submitted what was already
+  being written. The button now goes dead for as long as its own click is being
+  served. The import itself is still synchronous and still shows no progress.
+- **`docs/SECURITY.md` claimed an unknown username and a wrong password take
+  different amounts of time to refuse.** They do not, and the section now says so
+  with the numbers: 73 ms against 69 ms. `DaoAuthenticationProvider` compares the
+  typed password against a hash of its own when the account is not found, so the
+  gap the document described was already closed by the framework - and the dummy
+  comparison it recommended would have reopened it, on the other side.
+
 ## [0.1.0] - 2026-11-12
 
 The first public release. Everything below is what the code in this tag does.

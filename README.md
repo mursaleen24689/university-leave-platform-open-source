@@ -42,7 +42,7 @@ organization it loads is invented sample data, not a real university's.
 | Language and runtime | Java 21 |
 | Application | Spring Boot 4.1.2, Spring Security 7.1.2 |
 | User interface | Vaadin 25.3.4 — the screens are Java on the server, no separate JavaScript app |
-| Database | Oracle Database Free (23ai/26ai) with Flyway migrations `V001`–`V019` |
+| Database | Oracle Database Free (23ai/26ai) with Flyway migrations `V001`–`V020` |
 | Build | Maven wrapper (`backend/mvnw`), nothing to install separately |
 | Tests | JUnit 5 + Mockito + AssertJ, 611 tests in 57 classes, no database needed |
 

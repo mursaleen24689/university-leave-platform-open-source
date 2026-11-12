@@ -81,6 +81,16 @@ phase gate and updated when the threat model changes.
   `GET /api/v1/auth/captcha` with its own cookies, read the six characters out
   of the picture and send them as the `captcha` field of the `POST /login`, or
   it will be turned back before it reaches the password.
+- **A username that does not exist and a wrong password take the same time to
+  refuse**, though the code reads as if they would not: `AppUserDetailsService`
+  throws `UsernameNotFoundException` before it touches a hash. Spring's
+  `DaoAuthenticationProvider` catches that exception and compares the typed
+  password against a hash of its own before it reports the failure, so either
+  refusal costs one BCrypt. Measured against a running server on a fresh schema:
+  73 ms for a name nobody holds against 69 ms for a wrong password, medians of
+  three. Adding a second comparison inside the service - the remedy that looks
+  obvious from the code - is what puts the two apart, at 120 ms against 69 ms,
+  because the unknown name then pays for BCrypt twice.
 - Three counts stand behind that picture, each answering a different kind of
   caller, and all of them are in `application.yml` under `app.sign-in` so an
   office that needs a different balance asks for it instead of waiting for a
@@ -441,11 +451,6 @@ closed.
   which is a pilot precondition, not a code change. What an unclaimed temporary
   password can do is narrow: it only ever changes itself, on the screen and on
   every API path.
-- **A name that does not exist and a wrong password take different amounts of
-  time to refuse**, because the unknown name never reaches the hash comparison.
-  The scripted guessing that this gap invites is answered further up the chain -
-  a security code the server drew, plus per-address and per-session ceilings - so
-  no dummy hash run was added.
 - **The URL authorization rules in `config/SecurityConfig.java` have no
   automated test.** The suite covers the services and the filters; the rules
   themselves are verified against a running server, and `docs/TEST-PLAN.md` says

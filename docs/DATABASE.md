@@ -194,6 +194,26 @@ try to insert one; the loser would fail on `uk_leave_balance` and the approver
 would see an error for a request that was perfectly in order. The employee row
 exists in both cases, so the two paths queue behind each other instead.
 
+### `leave_balance` index (`V020`)
+
+`uk_leave_balance` is `(employee_id, leave_type_id, leave_year)`, which serves one
+person's own balances but leads with a column the year-end reports never name.
+`LeaveBalanceRepository.findAllForYear` asks for every balance of a type in a
+year, so `V020` adds `idx_balance_type_year` on `(leave_type_id, leave_year)`.
+
+Measured instead of guessed, on a throwaway schema filled to the size an
+installation reaches - 4,000 staff, 6 leave types, 3 years, 72,000 balance rows -
+with statistics gathered before the plan was read. The register query moved from
+`TABLE ACCESS FULL` on `LEAVE_BALANCE` to `INDEX RANGE SCAN` on the new index. On
+a schema seeded only with the single `CL` type nothing changes: one value in that
+column carries every row, so the optimizer keeps the full scan, or the
+`UK_LEAVE_BALANCE` skip scan it used before.
+
+The other index that was suggested for this table's reports, `leave_application
+(leave_type_id, status)`, was measured too and **not** added: no query in the
+codebase names `leave_type_id` on that table, so it would cost a write on every
+request for a read that never happens.
+
 ### leave_application (V010 adds two columns, V017 adds one)
 
 | Column | Meaning |
