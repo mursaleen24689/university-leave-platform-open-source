@@ -5,6 +5,14 @@ on:
     branches: [main]
   pull_request:
 
+# The token these jobs get is read-only for the repository. `actions: write` is
+# the extra the two steps below need for their own housekeeping - saving and
+# restoring the Maven cache, and publishing the built JAR as an artifact - and
+# neither of them touches a repository ref.
+permissions:
+  contents: read
+  actions: write
+
 jobs:
   tests:
     name: Unit tests (no database)
