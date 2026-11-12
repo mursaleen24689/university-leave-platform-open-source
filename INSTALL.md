@@ -58,6 +58,11 @@ before you use this route anywhere that matters, and note that a container
 holds your leave records: back it up like any other database
 ([`docs/DATABASE.md`](docs/DATABASE.md), "Backup").
 
+Say what was checked and what was not: these migrations were run against a local
+Oracle Database Free 26ai **install**, not against the container above. Same
+database engine, so the route is the documented one — but if it bites, the
+failure will be about the container image and not about the schema.
+
 ### The installed route
 
 Install Oracle Database Free on the host or a database server, then make sure
@@ -143,6 +148,17 @@ Remove these from the environment as soon as the account exists. The application
 ignores them once an administrator is present, but leaving a password in a file
 on a server is how passwords leak.
 
+### What the migrations leave you with
+
+Four invented faculties, fifteen departments and offices (twelve academic, three
+administrative), seven roles, and **one** leave type — Casual Leave — with no
+holidays in the calendar. That is enough to sign in and see the screens, not
+enough to run a leave year. On the Leave setup screen, add your leave types with
+their quotas and carry-over rules and load the holiday calendar for the year,
+then create employees on the Administration screen or import them from CSV, and
+give each account its roles. `docs/ADMIN-GUIDE.md` walks through all of it in
+order.
+
 ## 5. Start it
 
 ```bash
@@ -151,7 +167,8 @@ cd backend
 ```
 
 - The first start takes minutes while Vaadin builds its front-end bundle; later
-  starts reuse it.
+  starts reuse it. A packaged production JAR needs no bundle build at all — it
+  comes up in about fifteen seconds, Flyway included.
 - If the database is not provisioned yet, startup stops with a connection error.
   That is the expected order, not a bug.
 - Health: <http://localhost:8080/actuator/health> (open without signing in).

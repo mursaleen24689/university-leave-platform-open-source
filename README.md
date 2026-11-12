@@ -5,9 +5,11 @@ department approve, administrators set the rules, and every decision leaves a
 trace that can be read back years later.
 
 **Status:** a working application, not a hosted service. Everything described
-here runs and its tests pass (`611` unit tests, `./mvnw verify`), but the build
-is `0.0.1-SNAPSHOT`: there is no production server behind this repository, and
-the organization data it loads is invented sample data, not a real university's.
+here runs: `611` unit tests pass with `./mvnw verify`, the migrations apply to an
+empty Oracle schema in order, and the packaged JAR starts against a fresh schema
+and signs in as the administrator its bootstrap variables create. What is not
+here is a production server, so the build stays `0.0.1-SNAPSHOT`, and the
+organization it loads is invented sample data, not a real university's.
 
 ## What it does
 
