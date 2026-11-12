@@ -86,7 +86,7 @@ class MailSettingsServiceTest {
         assertThatThrownBy(() -> service.update(input("would be plain text", Set.of()), ACTOR))
                 .isInstanceOf(MailSettingException.class)
                 .hasMessageContaining("LEAVE_MAIL_KEY");
-        assertThat(row.getHost()).isEqualTo("mail.nedu.edu.pk");
+        assertThat(row.getHost()).isEqualTo("mail.example.edu");
     }
 
     @Test
@@ -134,8 +134,8 @@ class MailSettingsServiceTest {
         MailSettingsSummary summary = service.update(
                 new MailSettingsInput(null, null, 25, null, null, null, null, null, null), ACTOR);
 
-        assertThat(row.getHost()).isEqualTo("mail.nedu.edu.pk");
-        assertThat(row.getFromAddress()).isEqualTo("leave@nedu.edu.pk");
+        assertThat(row.getHost()).isEqualTo("mail.example.edu");
+        assertThat(row.getFromAddress()).isEqualTo("leave@example.edu");
         assertThat(row.getPort()).isEqualTo(25);
         assertThat(summary.hasPassword()).isTrue();
     }
@@ -147,13 +147,13 @@ class MailSettingsServiceTest {
         when(repository.findById(MailSettings.ROW)).thenReturn(Optional.of(row));
         when(repository.save(any())).thenAnswer(call -> call.getArgument(0));
 
-        service.update(new MailSettingsInput(false, "mail.nedu.edu.pk", 587, "leave", null,
+        service.update(new MailSettingsInput(false, "mail.example.edu", 587, "leave", null,
                 "", true, null, false), ACTOR);
 
         ArgumentCaptor<MailSettings> saved = ArgumentCaptor.forClass(MailSettings.class);
         verify(repository).save(saved.capture());
         assertThat(saved.getValue().getFromAddress()).isNull();
-        assertThat(saved.getValue().getHost()).isEqualTo("mail.nedu.edu.pk");
+        assertThat(saved.getValue().getHost()).isEqualTo("mail.example.edu");
     }
 
     @Test
@@ -169,7 +169,7 @@ class MailSettingsServiceTest {
 
     @Test
     void anEmptyKindListMeansEveryKindTheBellShows() {
-        MailSettings row = new MailSettings("mail.nedu.edu.pk", 587, "leave", "leave@nedu.edu.pk",
+        MailSettings row = new MailSettings("mail.example.edu", 587, "leave", "leave@example.edu",
                 true, true, Set.of());
 
         assertThat(row.mails(NotificationKind.REQUEST_DECIDED.name())).isTrue();
@@ -178,7 +178,7 @@ class MailSettingsServiceTest {
 
     @Test
     void aListedKindIsMailedAndAnUnlistedOneIsNot() {
-        MailSettings row = new MailSettings("mail.nedu.edu.pk", 587, "leave", "leave@nedu.edu.pk",
+        MailSettings row = new MailSettings("mail.example.edu", 587, "leave", "leave@example.edu",
                 true, true, Set.of(NotificationKind.REQUEST_DECIDED.name()));
 
         assertThat(row.mails(NotificationKind.REQUEST_DECIDED.name())).isTrue();
@@ -187,7 +187,7 @@ class MailSettingsServiceTest {
 
     @Test
     void aDisabledRowMailsNothingWhateverItLists() {
-        MailSettings row = new MailSettings("mail.nedu.edu.pk", 587, "leave", "leave@nedu.edu.pk",
+        MailSettings row = new MailSettings("mail.example.edu", 587, "leave", "leave@example.edu",
                 true, false, Set.of());
 
         assertThat(row.mails(NotificationKind.REQUEST_DECIDED.name())).isFalse();
@@ -200,8 +200,8 @@ class MailSettingsServiceTest {
         when(repository.findById(MailSettings.ROW)).thenReturn(Optional.of(row));
         when(repository.save(any())).thenAnswer(call -> call.getArgument(0));
 
-        service.update(new MailSettingsInput(false, "mail.nedu.edu.pk", 25, null, null,
-                "leave@nedu.edu.pk", true, Set.of(), false), ACTOR);
+        service.update(new MailSettingsInput(false, "mail.example.edu", 25, null, null,
+                "leave@example.edu", true, Set.of(), false), ACTOR);
 
         ArgumentCaptor<String> detail = ArgumentCaptor.forClass(String.class);
         verify(audit).record(eq(AuditAction.MAIL_SETTINGS_UPDATED), eq("MAIL_SETTINGS"),
@@ -214,12 +214,12 @@ class MailSettingsServiceTest {
     }
 
     private static MailSettings filled() {
-        return new MailSettings("mail.nedu.edu.pk", 587, "leave", "leave@nedu.edu.pk",
+        return new MailSettings("mail.example.edu", 587, "leave", "leave@example.edu",
                 true, false, Set.of());
     }
 
     private static MailSettingsInput input(String password, Set<String> kinds) {
-        return new MailSettingsInput(false, "mail.nedu.edu.pk", 587, "leave", password,
-                "leave@nedu.edu.pk", true, kinds, false);
+        return new MailSettingsInput(false, "mail.example.edu", 587, "leave", password,
+                "leave@example.edu", true, kinds, false);
     }
 }

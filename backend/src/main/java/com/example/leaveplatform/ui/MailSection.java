@@ -89,14 +89,14 @@ class MailSection extends VerticalLayout {
     }
 
     private VerticalLayout fields() {
-        host.setPlaceholder("mail.neduniversity.edu.pk");
+        host.setPlaceholder("mail.example.edu");
         host.setWidthFull();
         port.setMin(1);
         port.setMax(65535);
         port.setWidth("9rem");
         port.setMaxWidth("100%");
         password.setPlaceholder("Type only to change it");
-        fromAddress.setPlaceholder("leave@neduniversity.edu.pk");
+        fromAddress.setPlaceholder("leave@example.edu");
         fromAddress.setWidthFull();
         kinds.setItems(Arrays.stream(NotificationKind.values()).map(Enum::name).toList());
         kinds.setItemLabelGenerator(ActionLabels::plain);

@@ -74,7 +74,7 @@ public class MailSettingsService {
         String from = supplied(input.fromAddress(), row.getFromAddress(), MAX_ADDRESS, "sender address");
         if (from != null && !from.contains("@")) {
             throw new MailSettingException(
-                    "The sender address must be a full address like leave@neduniversity.edu.pk.");
+                    "The sender address must be a full address like leave@example.edu.");
         }
         Set<String> events = input.mailedEvents() == null ? row.events() : knownEvents(input.mailedEvents());
         boolean tls = input.useTls() == null ? row.isUseTls() : input.useTls();

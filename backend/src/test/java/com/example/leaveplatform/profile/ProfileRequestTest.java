@@ -62,7 +62,7 @@ class ProfileRequestTest {
         ProfileRequest request = new ProfileRequest(person, "Typo in my number.");
         request.propose(ProfileField.FULL_NAME, "Sara Ahmed Khan");
         write(request, "phoneProposed", "0300-9999999");
-        write(request, "employeeNoProposed", "MET-7777");
+        write(request, "employeeNoProposed", "EMP-7777");
 
         assertThat(request.changedFields()).containsExactly(ProfileField.FULL_NAME);
         assertThat(request.changes()).singleElement()
@@ -153,7 +153,7 @@ class ProfileRequestTest {
     }
 
     private static Employee anOfficer() {
-        return new Employee("MET-2000", "Nadia Ahmed", null, null, "PA to the Director", null);
+        return new Employee("EMP-2000", "Nadia Ahmed", null, null, "PA to the Director", null);
     }
 
     private static void write(ProfileRequest request, String name, Object value) {

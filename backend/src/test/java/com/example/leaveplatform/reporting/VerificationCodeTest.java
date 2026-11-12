@@ -102,11 +102,11 @@ class VerificationCodeTest {
     @Test
     void thePictureHoldsAnAddressOnceThePlatformKnowsWhereItLives() {
         VerificationCode hosted =
-                new VerificationCode(new VerificationKey("the test material"), "https://leave.nedu.edu.pk/");
+                new VerificationCode(new VerificationKey("the test material"), "https://leave.example.edu/");
 
         String payload = hosted.payloadFor(REFERENCE);
 
-        assertThat(payload).isEqualTo("https://leave.nedu.edu.pk/api/v1/reports/verify?reference="
+        assertThat(payload).isEqualTo("https://leave.example.edu/api/v1/reports/verify?reference="
                 + REFERENCE + "&code=" + signed.codeFor(REFERENCE));
         // The address is the words with the same code under them: a phone opens
         // it, and a person at a desk can still read the two parts off the paper.

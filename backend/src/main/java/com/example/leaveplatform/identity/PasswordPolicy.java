@@ -25,7 +25,7 @@ public class PasswordPolicy {
             "passwordpassword", "qwertyuiop123", "administrator", "letmein12345",
             "welcome12345", "changeme1234", "iloveyou1234", "trustno1trustno1",
             "qwerty123456", "1qaz2wsx3edc", "abc123456789", "p@ssw0rdp@ssw0rd",
-            "password!234", "adminadminadmin", "university123", "neduniversity");
+            "password!234", "adminadminadmin", "university123", "universityleave");
 
     public void check(String rawPassword, String username) {
         if (rawPassword == null || rawPassword.length() < MIN_LENGTH) {

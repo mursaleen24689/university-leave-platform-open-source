@@ -45,7 +45,7 @@ class QrGlyphTest {
 
     @Test
     void thePictureCarriesTheFormCodeOfAnAddressToo() throws Exception {
-        String url = "https://leave.nedu.edu.pk/api/v1/reports/verify"
+        String url = "https://leave.example.edu/api/v1/reports/verify"
                 + "?reference=LV-000123&code=0123456789abcdef0123456789abcdef";
 
         BitMatrix matrix = QrGlyph.matrix(url);

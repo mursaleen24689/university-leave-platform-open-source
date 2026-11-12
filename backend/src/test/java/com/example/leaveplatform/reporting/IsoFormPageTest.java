@@ -243,17 +243,17 @@ class IsoFormPageTest {
 
     @Test
     void aReasonThatFitsThePaperPrintsEveryWordOfIt() {
-        IsoForm shortNote = written("LV-000111", "Attending my sister's wedding in Hyderabad.");
+        IsoForm shortNote = written("LV-000111", "Attending my sister's wedding out of town.");
 
         assertThat(IsoFormPage.of(List.of(shortNote), "report.reader", MONDAY))
                 .contains("<tr class=\"tall\"><th>Reason for Leave</th><td>Attending my sister&#39;s "
-                        + "wedding in Hyderabad.</td>")
+                        + "wedding out of town.</td>")
                 .doesNotContain("printed in full in the leave register");
     }
 
     @Test
     void aReasonTooLongForThePaperStopsAtAWholeWordAndNamesWhereTheRestIs() {
-        String typed = "Attending family functions in Hyderabad and then travelling to the city for "
+        String typed = "Attending family functions out of town and then travelling to the city for "
                 .repeat(20);
         String page = IsoFormPage.of(List.of(written("LV-000111", typed)), "report.reader", MONDAY);
         String printed = page.substring(page.indexOf("<tr class=\"tall\"><th>Reason for Leave</th><td>")

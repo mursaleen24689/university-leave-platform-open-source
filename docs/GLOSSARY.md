@@ -19,7 +19,7 @@
 | Verification code | The twelve characters beside a form's number, and the same pair in its QR, which let somebody holding the paper confirm it at `GET /api/v1/reports/verify` without an account. Made by HMAC-SHA256 of the number with `LEAVE_VERIFY_KEY`; see ADR-019 |
 | `LEAVE_VERIFY_KEY` | The server's signing text for verification codes. Set per server by the administration team, never committed and never defaulted; without it the platform mints no code, refuses every check and prints forms that say so in words |
 | PA | Personal Assistant, a role that records applications for staff |
-| BPS | Basic Pay Scale, the civil-service grade used in Pakistan |
+| BPS | Basic Pay Scale, the civil-service grade used in government pay structures |
 | LWP | Leave Without Pay |
 | Leave balance | Remaining entitlement for an employee and leave type in a year |
 | Carry-forward | Unused balance moved to the next year, subject to a cap |

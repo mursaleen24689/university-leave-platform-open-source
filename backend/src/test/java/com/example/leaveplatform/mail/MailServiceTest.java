@@ -31,7 +31,7 @@ import com.example.leaveplatform.notification.NotificationKind;
  */
 class MailServiceTest {
 
-    private static final String ADDRESS = "nadia@nedu.edu.pk";
+    private static final String ADDRESS = "nadia@example.edu";
 
     private final MailSettingsService settings = mock(MailSettingsService.class);
     private final MailAttemptRepository attempts = mock(MailAttemptRepository.class);
@@ -57,7 +57,7 @@ class MailServiceTest {
 
     @Test
     void noServerSavedIsReportedRatherThanLeftBlank() {
-        MailSettings missing = new MailSettings(null, null, "leave", "leave@nedu.edu.pk",
+        MailSettings missing = new MailSettings(null, null, "leave", "leave@example.edu",
                 true, true, Set.of());
         when(settings.current()).thenReturn(missing);
 
@@ -73,7 +73,7 @@ class MailServiceTest {
         service.onMessageStored(new MessageStored("hod.mech", NotificationKind.REQUEST_DECIDED,
                 "Your leave was approved", "Three days from 11 January."));
 
-        verify(transport).send(any(), eq("leave@nedu.edu.pk"), eq(ADDRESS),
+        verify(transport).send(any(), eq("leave@example.edu"), eq(ADDRESS),
                 eq("Your leave was approved"), eq("Three days from 11 January."));
         verify(attempts).save(any());
     }
@@ -163,7 +163,7 @@ class MailServiceTest {
     }
 
     private static MailSettings row(boolean enabled, Set<String> kinds) {
-        return new MailSettings("mail.nedu.edu.pk", 587, "leave", "leave@nedu.edu.pk",
+        return new MailSettings("mail.example.edu", 587, "leave", "leave@example.edu",
                 true, enabled, kinds);
     }
 

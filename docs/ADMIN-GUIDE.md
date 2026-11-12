@@ -329,10 +329,10 @@ university's mail details go in through this screen when somebody is given them.
   Only a central administrator can open it or its endpoints.
 - **Send mail** is the switch. Filling in a server name does not start anything;
   mail leaves the platform only while that box is ticked.
-- What the mail server needs: **Mail server** (e.g. `mail.neduniversity.edu.pk`),
+- What the mail server needs: **Mail server** (e.g. `mail.example.edu`),
   **Port** (25, 587 or 465 - ask IT), **Sign-in name on the mail server** and
   **Password** when the server asks for one, **Sender address** (the address the
-  mail is from, e.g. `leave@neduniversity.edu.pk`), and **Use TLS** for a server
+  mail is from, e.g. `leave@example.edu`), and **Use TLS** for a server
   that wants STARTTLS. A plain relay inside the campus network usually needs no
   sign-in name, no password and TLS off.
 - **Mail these kinds of message** chooses which news is e-mailed. Leaving all of
@@ -512,7 +512,7 @@ Reached from **Leave setup** in the header; only a `CENTRAL_ADMIN` account sees
 it. It holds the two lists that used to need a database edit.
 
 - **Public holiday calendar.** Pick the year, then add a date and a name - for
-  example 23 March, Pakistan Day. A holiday is a calendar day: it is skipped
+  example 23 March, Republic Day. A holiday is a calendar day: it is skipped
   only when it falls Monday to Friday, and a range that turns out to be nothing
   but holidays is refused rather than filed as a zero-day request. The same date
   cannot be listed twice, and a name longer than 150 characters is refused.

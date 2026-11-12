@@ -91,8 +91,8 @@ class ProfileRequestServiceTest {
         // show which rule was consulted without restating how it works.
         when(rules.checkEmployeeNo(any(), any())).thenAnswer(call -> {
             String raw = call.getArgument(0);
-            if ("MET-9999".equals(raw == null ? null : raw.trim())) {
-                throw new AdminException("Staff number MET-9999 already belongs to Ali Ahmed.");
+            if ("EMP-9999".equals(raw == null ? null : raw.trim())) {
+                throw new AdminException("Staff number EMP-9999 already belongs to Ali Ahmed.");
             }
             return raw == null || raw.isBlank() ? null : raw.trim();
         });
@@ -139,7 +139,7 @@ class ProfileRequestServiceTest {
         for (ProfileField field : named) {
             request.propose(field, switch (field) {
                 case FULL_NAME -> "Sara Ahmed Khan";
-                case EMPLOYEE_NO -> "MET-1234";
+                case EMPLOYEE_NO -> "EMP-1234";
                 case DESIGNATION -> "Senior Office Superintendent";
                 case EMAIL -> "sara.ahmed@app.edu";
                 case PHONE -> "0300-2222222";
@@ -247,13 +247,13 @@ class ProfileRequestServiceTest {
 
     @Test
     void theSameRulesTheOfficeUsesApplyToWhatAPersonProposes() {
-        assertThatThrownBy(() -> service.submit(STAFF, ask(null, "MET-9999", null, null, null)))
+        assertThatThrownBy(() -> service.submit(STAFF, ask(null, "EMP-9999", null, null, null)))
                 .isInstanceOf(AdminException.class)
-                .hasMessage("Staff number MET-9999 already belongs to Ali Ahmed.");
+                .hasMessage("Staff number EMP-9999 already belongs to Ali Ahmed.");
         assertThatThrownBy(() -> service.submit(STAFF, ask(null, null, null, "taken@app.edu", null)))
                 .isInstanceOf(AdminException.class)
                 .hasMessage("E-mail taken@app.edu already belongs to Ali Ahmed.");
-        verify(rules).checkEmployeeNo("MET-9999", STAFF_ID);
+        verify(rules).checkEmployeeNo("EMP-9999", STAFF_ID);
         verify(rules).checkEmail("taken@app.edu", STAFF_ID);
         verify(requests, never()).save(any());
     }
@@ -317,12 +317,12 @@ class ProfileRequestServiceTest {
     void aNumberThatWentToSomeoneElseWhileTheRequestWaitedIsRefusedAtTheMomentOfApproving() {
         ProfileRequest request = stored(ProfileRequestStatus.PENDING, staff, ProfileField.EMPLOYEE_NO);
         when(requests.findByIdForUpdate(7L)).thenReturn(Optional.of(request));
-        when(rules.checkEmployeeNo("MET-1234", STAFF_ID))
-                .thenThrow(new AdminException("Staff number MET-1234 already belongs to Ali Ahmed."));
+        when(rules.checkEmployeeNo("EMP-1234", STAFF_ID))
+                .thenThrow(new AdminException("Staff number EMP-1234 already belongs to Ali Ahmed."));
 
         assertThatThrownBy(() -> service.approve(DESK, 7L, null))
                 .isInstanceOf(AdminException.class)
-                .hasMessage("Staff number MET-1234 already belongs to Ali Ahmed.");
+                .hasMessage("Staff number EMP-1234 already belongs to Ali Ahmed.");
 
         verify(staff, never()).changeEmployeeNo(any());
         assertThat(request.getStatus()).isEqualTo(ProfileRequestStatus.PENDING);
@@ -445,7 +445,7 @@ class ProfileRequestServiceTest {
         // order they were typed, so the office reads the same list every time.
         assertThat(detail.changes().get(0).label()).isEqualTo("Staff number");
         assertThat(detail.changes().get(0).current()).isEqualTo("ADMIN-001");
-        assertThat(detail.changes().get(0).proposed()).isEqualTo("MET-1234");
+        assertThat(detail.changes().get(0).proposed()).isEqualTo("EMP-1234");
         assertThat(detail.changes().get(1).field()).isEqualTo("PHONE");
         assertThat(detail.changes().get(1).current()).isEqualTo("0300-0000000");
         assertThat(detail.changes().get(1).proposed()).isEqualTo("0300-2222222");
