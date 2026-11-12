@@ -1,0 +1,511 @@
+:root {
+    --app-navy: #233E74;
+    --app-orange: #F4780D;
+    --app-navy-soft: rgba(35, 62, 116, 0.08);
+    --app-ink: #1c2433;
+    --app-muted: #5b6472;
+    --app-line: #e2e6ee;
+    --app-page: #f5f7fb;
+}
+
+body {
+    background: var(--app-page);
+    color: var(--app-ink);
+}
+
+h1, h2 {
+    color: var(--app-navy);
+}
+
+h2 {
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.app-header {
+    background: #ffffff;
+    border-bottom: 3px solid var(--app-orange);
+    box-shadow: 0 2px 6px rgba(20, 32, 64, 0.06);
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    padding: 0.45rem 1.5rem;
+    width: 100%;
+}
+
+.app-header .app-logo {
+    display: block;
+    height: 46px;
+    width: auto;
+}
+
+.app-product {
+    color: var(--app-navy);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+}
+
+.app-divider {
+    background: var(--app-line);
+    height: 30px;
+    width: 1px;
+}
+
+/* A form row: fields and buttons side by side. Baseline is what keeps them
+   readable — the words in every box and on every button sit on one line, and
+   the help text under a field hangs below it instead of lifting the field out
+   of the row. */
+.app-fields {
+    align-items: baseline;
+}
+
+.app-nav {
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    /* The links sit against the account block on a wide screen and are centred
+       on a narrow one, so the alignment lives here rather than in the Java. */
+    justify-content: flex-end;
+}
+
+.app-nav a {
+    border-radius: 8px;
+    color: var(--app-navy);
+    font-weight: 500;
+    padding: 0.45rem 0.75rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.app-nav a:hover {
+    background: var(--app-navy-soft);
+}
+
+.app-user {
+    color: var(--app-muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.app-account {
+    align-items: flex-end;
+}
+
+.app-page {
+    box-sizing: border-box;
+    margin: 0 auto;
+    max-width: 1240px;
+    padding: 1.5rem 1.5rem 2.5rem;
+    width: 100%;
+}
+
+.app-cards {
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.app-card {
+    background: #ffffff;
+    border: 1px solid var(--app-line);
+    border-top: 3px solid var(--app-orange);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(20, 32, 64, 0.05);
+    box-sizing: border-box;
+    min-width: 230px;
+    padding: 1.1rem 1.3rem;
+}
+
+.app-card h3 {
+    color: var(--app-navy);
+    font-size: 1.05rem;
+    margin: 0 0 0.35rem;
+}
+
+.app-card a {
+    color: var(--app-orange);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.app-card a:hover {
+    text-decoration: underline;
+}
+
+.app-note {
+    background: #fff6ec;
+    border-left: 4px solid var(--app-orange);
+    border-radius: 6px;
+    box-sizing: border-box;
+    color: var(--app-ink);
+    padding: 0.6rem 0.9rem;
+    width: 100%;
+}
+
+.app-footer {
+    border-top: 1px solid var(--app-line);
+    color: var(--app-muted);
+    font-size: 0.8rem;
+    line-height: 1.55;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    text-align: center;
+    width: 100%;
+}
+
+.app-login-page {
+    box-sizing: border-box;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+.app-login-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border-top: 4px solid var(--app-orange);
+    box-shadow: 0 10px 30px rgba(20, 32, 64, 0.12);
+    box-sizing: border-box;
+    max-width: 520px;
+    padding: 2rem 2.2rem;
+    width: 100%;
+}
+
+.app-login-card .app-logo {
+    display: block;
+    height: 72px;
+    margin: 0 auto 0.75rem;
+    width: auto;
+}
+
+.app-login-card h1 {
+    font-size: 1.25rem;
+    margin: 0 0 0.25rem;
+    text-align: center;
+}
+
+.app-login-card h2 {
+    color: var(--app-muted);
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0 0 1.25rem;
+    text-align: center;
+}
+
+/* The audit detail is a sentence, so let it wrap inside its cell. */
+.app-audit vaadin-grid-cell-content {
+    white-space: normal;
+}
+/* Placeholder in a grid cell where no action applies, and the one-line
+   explanation inside a confirm box. */
+.app-muted {
+    color: var(--app-muted);
+}
+
+.app-dialog-help {
+    color: var(--app-muted);
+    display: block;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* The line shown where a grid has nothing to list yet. */
+.app-empty {
+    color: var(--app-muted);
+    font-size: 0.875rem;
+    margin: 0.5rem 0;
+}
+
+/* The security code the sign-in screen asks for. The picture is clickable
+   because the quickest way to a readable one is a fresh code. */
+.app-captcha-image {
+    border: 1px solid #dbe3ef;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.app-captcha-row {
+    align-items: flex-end;
+    justify-content: center;
+    margin: 0 0 0.5rem;
+    width: 100%;
+}
+
+.app-captcha-note {
+    color: var(--app-muted);
+    display: block;
+    font-size: 0.875rem;
+    margin: 0 0 1rem;
+    text-align: center;
+}
+
+/* The optional authenticator box on the sign-in screen. It sits under the
+   security code and above the note, and it is deliberately not part of the
+   code row: on a phone that row already takes a line each for the picture, the
+   box and the refresh, and a fourth would be the one field people actually
+   need to see. */
+.app-twostep-box {
+    margin: 0 0 0.75rem;
+}
+
+/* The seed picture on the two-step screen. The white behind it is not
+   decoration: a dark theme would otherwise invert the page around a picture
+   whose dark modules are already dark, and a scanner that cannot tell the two
+   apart is a person typing a seed by hand. 60 mm is what the picture asks for
+   and what a phone picks up at arm's length; max-width keeps a narrow screen
+   from putting half of it off the page. */
+.app-twostep-qr {
+    background: #fff;
+    border: 1px solid #dbe3ef;
+    border-radius: 8px;
+    max-width: 100%;
+    padding: 0.5rem;
+    width: fit-content;
+}
+
+.app-twostep-qr svg {
+    display: block;
+}
+
+/* The bell in the header. The unread count is drawn over the icon's shoulder
+   instead of beside it, because a number that took room of its own would push
+   the navigation apart - and on a phone the header has no room to spare. */
+.app-bell {
+    align-items: center;
+    position: relative;
+}
+
+.app-bell-count {
+    background: var(--app-orange);
+    border-radius: 999px;
+    color: #ffffff;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.2rem 0.35rem;
+    pointer-events: none;
+    position: absolute;
+    right: -0.2rem;
+    top: -0.35rem;
+}
+
+/* Two hundred messages can be listed and the dialog stops at four fifths of the
+   screen, so the list - not the whole box - is what scrolls. That keeps the
+   heading and the two buttons reachable from the first message to the last. */
+.app-bell-list {
+    max-height: 60vh;
+    overflow: auto;
+    width: 100%;
+}
+
+/* One message in the list: the words on the left, the way to mark it read on
+   the right, and a line under each so two messages do not run into one. */
+.app-bell-row {
+    align-items: flex-start;
+    border-bottom: 1px solid var(--app-line);
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    width: 100%;
+}
+
+.app-bell-row:last-of-type {
+    border-bottom: 0;
+}
+
+/* One line of the mail log on the administration screen. The list is fifty rows
+   of text, so it is kept tight and slightly smaller than the labels above it;
+   each line says when, to whom, and what the answer was. */
+.app-log-line {
+    border-bottom: 1px solid var(--app-line);
+    color: var(--app-muted);
+    font-size: 0.85rem;
+    margin: 0;
+    padding: 0.3rem 0;
+    width: 100%;
+}
+
+.app-log-line:last-of-type {
+    border-bottom: 0;
+}
+
+/* One line of a help-desk conversation. Both sides read the same list, so whose
+   words they are has to be obvious at a glance: the writer is named, the desk is
+   marked, and the time is kept small beside it. */
+.app-thread-line {
+    border-bottom: 1px solid var(--app-line);
+    gap: 0.4rem;
+    padding: 0.5rem 0;
+    width: 100%;
+}
+
+.app-thread-line:last-of-type {
+    border-bottom: 0;
+}
+
+.app-thread-when {
+    color: var(--app-muted);
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.app-thread-author {
+    color: var(--app-navy);
+    font-weight: 600;
+}
+
+.app-thread-desk {
+    background: var(--app-navy);
+    border-radius: 0.5rem;
+    color: #fff;
+    font-size: 0.72rem;
+    padding: 0.05rem 0.4rem;
+}
+
+/* One field of a proposed record correction. The office decides from a
+   comparison, so the two values have to be read against each other and not
+   mixed up: what the record says now is quiet, what was asked for is the dark
+   line, and the field name sits above both. */
+.app-diff {
+    width: 100%;
+}
+
+.app-diff-line {
+    border-bottom: 1px solid var(--app-line);
+    gap: 0.15rem;
+    padding: 0.5rem 0;
+    width: 100%;
+}
+
+.app-diff-line:last-of-type {
+    border-bottom: 0;
+}
+
+.app-diff-field {
+    color: var(--app-navy);
+    font-weight: 600;
+}
+
+.app-diff-now {
+    color: var(--app-muted);
+    font-size: 0.88rem;
+}
+
+.app-diff-asked {
+    font-size: 0.92rem;
+}
+
+/* What the university holds about the signed-in person, read before they ask for
+   any of it to change. */
+.app-held-line {
+    border-bottom: 1px solid var(--app-line);
+    font-size: 0.9rem;
+    padding: 0.3rem 0;
+    width: 100%;
+}
+
+.app-held-line:last-of-type {
+    border-bottom: 0;
+}
+
+.app-bell-message {
+    gap: 0.15rem;
+}
+
+.app-bell-message .app-bell-title {
+    color: var(--app-navy);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.app-bell-message .app-bell-title:hover {
+    text-decoration: underline;
+}
+
+.app-bell-message > span {
+    color: var(--app-muted);
+    font-size: 0.8125rem;
+}
+
+.app-bell-actions {
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+.app-bell-note {
+    color: var(--app-muted);
+    display: block;
+    font-size: 0.8125rem;
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+/* A phone is narrower than the header and the form rows were designed for.
+   Below this width the navigation takes a line of its own and the page stops
+   wasting the little space there is. */
+@media (max-width: 720px) {
+    .app-captcha-row {
+        align-items: stretch;
+    }
+
+    .app-captcha-row > * {
+        flex-basis: 100%;
+        width: 100%;
+    }
+
+    /* The code picture is drawn at one size and stretching it makes the
+       characters wander, so on a phone it keeps its own width and centres. */
+    .app-captcha-row .app-captcha-image {
+        align-self: center;
+        flex-basis: auto;
+        width: 220px;
+    }
+    .app-header {
+        justify-content: space-between;
+        padding: 0.45rem 0.75rem;
+    }
+
+    .app-header .app-nav {
+        flex-basis: 100%;
+        justify-content: center;
+        /* The bell stays with the logo on the first line; the links and the
+           account block each take a line after it. */
+        order: 2;
+    }
+
+    .app-header .app-bell {
+        order: 1;
+    }
+
+    /* The name and the sign-out button read as a line of their own, centred,
+       instead of hanging off the right-hand edge of a narrow header. */
+    .app-header .app-account {
+        align-items: center;
+        flex-basis: 100%;
+        order: 3;
+    }
+
+    .app-header .app-product {
+        font-size: 1rem;
+    }
+
+    .app-page {
+        padding: 1rem 1rem 2rem;
+    }
+
+    /* Two fields and a button cannot share a line on a phone. Each part takes
+       the whole width, so a form reads top to bottom instead of wrapping in the
+       middle of a word. */
+    .app-fields {
+        align-items: stretch;
+    }
+
+    .app-fields > * {
+        flex-basis: 100%;
+        width: 100%;
+    }
+
+    .app-card {
+        min-width: 0;
+    }
+}

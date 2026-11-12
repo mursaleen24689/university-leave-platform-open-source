@@ -1,0 +1,136 @@
+spring:
+  application:
+    name: leave-platform
+  datasource:
+    url: ${LEAVE_DB_URL:jdbc:oracle:thin:@//127.0.0.1:1521/FREEPDB1}
+    username: ${LEAVE_DB_USER:LEAVEAPP}
+    password: ${LEAVE_DB_PASSWORD:}
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      maximum-pool-size: ${LEAVE_DB_POOL_SIZE:10}
+      connection-timeout: 10000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        # A filtered list loads the employee, their department and the leave type
+        # of every row. Fetching those in groups of fifty keeps a 200-row page to
+        # a handful of queries instead of one per row.
+        default_batch_fetch_size: 50
+        # Unquoted identifiers fold to upper case in Oracle; keep the default
+        # naming strategy so entity and column names match the migrations.
+        globally_quoted_identifiers: false
+  flyway:
+    enabled: ${LEAVE_FLYWAY_ENABLED:true}
+    locations: classpath:db/migration
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
+server:
+  port: ${LEAVE_SERVER_PORT:8080}
+  shutdown: graceful
+  # native, not framework: the security-code and printed-form counts are keyed on
+  # the client address, and "framework" believes X-Forwarded-For from anybody, so
+  # a script that rotates the header never fills either count. "native" hands the
+  # header to Tomcat, which believes it only from a proxy on an internal address.
+  # Behind nginx on this machine or on the campus network that is still the real
+  # visitor; from anywhere else the address stays the one the socket came from.
+  forward-headers-strategy: native
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        http-only: true
+        same-site: lax
+        # Set LEAVE_COOKIE_SECURE=true wherever the site is served over HTTPS.
+        secure: ${LEAVE_COOKIE_SECURE:false}
+  error:
+    include-message: never
+    include-stacktrace: never
+
+app:
+  sign-in:
+    # What one visitor may ask of the security code, counted in this process:
+    # pictures per minute from one address, pictures per browser session, wrong
+    # answers per session, and the wait that follows. All four sit far above
+    # anything a person reaches at the screen, because their job is to cap a
+    # script rather than to slow a visitor down - and because a shared campus
+    # egress address is one address to these counts. Raise the first number for
+    # a building, not for a bot.
+    code-pictures-per-address-per-minute: ${LEAVE_CAPTCHA_PICTURES_PER_ADDRESS:120}
+    code-pictures-per-session: ${LEAVE_CAPTCHA_PICTURES_PER_SESSION:40}
+    wrong-codes-per-session: ${LEAVE_CAPTCHA_WRONG_CODES:3}
+    wait-after-too-many-seconds: ${LEAVE_CAPTCHA_WAIT_SECONDS:120}
+  bootstrap:
+    username: ${LEAVE_BOOTSTRAP_ADMIN_USERNAME:}
+    password: ${LEAVE_BOOTSTRAP_ADMIN_PASSWORD:}
+    email: ${LEAVE_BOOTSTRAP_ADMIN_EMAIL:}
+    employee-no: ${LEAVE_BOOTSTRAP_ADMIN_EMPLOYEE_NO:ADMIN-001}
+    full-name: ${LEAVE_BOOTSTRAP_ADMIN_NAME:Initial Administrator}
+    designation: ${LEAVE_BOOTSTRAP_ADMIN_DESIGNATION:Administrator}
+    department-code: ${LEAVE_BOOTSTRAP_ADMIN_DEPARTMENT:}
+  mail:
+    # The text that encrypts the saved SMTP password. It lives here and in the
+    # environment, never in the database, so a stolen dump cannot be read as
+    # mail credentials. Without it the platform still saves a host and a port
+    # but refuses to store a password.
+    key: ${LEAVE_MAIL_KEY:}
+  two-step:
+    # The text that seals each authenticator seed. Its own key, not the mail
+    # one: the mail key unlocks the university's outgoing mail and this one
+    # unlocks the second factor of every enrolled account, and one leaked phrase
+    # should not be both. Without it nobody can turn two-step on, and accounts
+    # already enrolled cannot sign in until it is put back - see docs/OPERATIONS.md.
+    key: ${LEAVE_TWOSTEP_KEY:}
+    # The name an authenticator app shows beside the account, so a person with
+    # three universities in one app knows which number belongs to this one.
+    issuer: ${LEAVE_TWOSTEP_ISSUER:University Leave}
+    # Six digits every 30 seconds is what every authenticator app does without
+    # being told. Both are named here because the app and this platform have to
+    # agree, and because a shorter number or a longer step is a weaker check.
+    digits: 6
+    period-seconds: 30
+    # How far the clock is forgiven: one step either side of now, so a phone and
+    # this server may disagree by up to a minute. Not a knob to turn upwards -
+    # every extra step is how much longer a captured number stays useful.
+    window-steps: 1
+    # How long the seed of a setup in progress stays in the browser's session
+    # before it is thrown away. Long enough to find the app and scan a picture,
+    # short enough that a half-finished enrolment is not left lying around.
+    enrolment-minutes: 15
+  verify:
+    # The text that signs the code printed on a leave application form. Like the
+    # mail key it comes from the environment and never from the database,
+    # because the point of the code is that nobody holding a copy of the
+    # database - or of this repository - can mint one for a request of their
+    # choosing. Without it the forms still print, with the number in letters and
+    # no picture, and the public check refuses everything.
+    key: ${LEAVE_VERIFY_KEY:}
+    # How many printed forms one address may check in a minute. The check is
+    # open on purpose, so a crowded office scanning paper is ordinary traffic;
+    # what the count ends is a machine working through numbers, and the load one
+    # address can put on this read.
+    checks-per-address-per-minute: ${LEAVE_VERIFY_CHECKS_PER_ADDRESS:60}
+  # Where this platform is reached from outside, only so a QR picture can hold a
+  # full address a phone opens by itself. Left empty on a laptop or an intranet
+  # trial, the picture holds the same two parts as one short line to type.
+  public-url: ${LEAVE_PUBLIC_URL:}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.example.leaveplatform: INFO

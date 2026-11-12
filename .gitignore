@@ -1,0 +1,78 @@
+# Build output
+target/
+build/
+dist/
+out/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets/
+application-local.yml
+
+# Logs and runtime data
+logs/
+*.log
+uploads/
+backups/
+*.sql.gz
+*.dump
+
+# Dependencies
+node_modules/
+.pnpm-store/
+.mvn/wrapper/maven-wrapper.jar
+
+# Vaadin: generated at build time, never edited by hand
+backend/src/main/bundles/
+backend/src/main/frontend/generated/
+backend/package.json
+backend/package-lock.json
+backend/vite.config.ts
+backend/vite.generated.ts
+backend/types.d.ts
+.vaadin/
+
+# Data exports: a staff list or a leave register is never committed
+*.csv
+*.xlsx
+*.xls
+
+# Crash dumps and editor leftovers
+__pycache__/
+*.hprof
+hs_err_pid*
+*.orig
+*.rej
+*.swp
+*~
+*.bak
+*.tmp
+*.sqlite
+*.db
+*.mv.db
+
+# Local assistant and editor state
+.qoder/
+.claude/
+.fleet/
+.history/
+
+# IDE and OS
+.idea/
+.vscode/
+*.iml
+*.iws
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Test and coverage output
+coverage/
+*.lcov
+surefire-reports/
+failsafe-reports/
